@@ -1,9 +1,10 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, Query, UseGuards } from '@nestjs/common';
 import { UserService } from './user.service';
 import { User } from '@prisma/client';
 import { hash } from 'bcrypt'
 import { Public } from 'src/auth/auth.service';
 import { UserNoPassword } from './user.type';
+import { search } from 'superagent';
 
 @Controller('user')
 export class UserController {
@@ -13,10 +14,29 @@ export class UserController {
 
     @Public()
     @Get()
-    getAllPendingUsers(): Promise<UserNoPassword[]> {
+    getAllPendingUsers(
+        @Query() query: {
+            search: string
+        }
+    ): Promise<UserNoPassword[]> {
+        const searchText = query.search || ''
         return this.userService.users({
             where: {
-                is_approved: null
+                is_approved: null,
+                OR: [
+                    {
+                        first_name: {
+                            contains: searchText,
+                            mode: 'insensitive'
+                         }
+                    },
+                    {
+                        last_name: {
+                            contains: searchText,
+                            mode: 'insensitive'
+                         }
+                    }
+                ]
             }
         })
     }
