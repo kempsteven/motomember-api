@@ -2,21 +2,15 @@
 
 ##  Get All Pending Users:
 ```
-Request URL: https://motomember-api.onrender.com/user
+Request URL: https://motomember-api.onrender.com/user?search=
 Request Method: GET
 ```
 
-##  Get All Pending Users:
+##  Verify Pending Users:
 ```
-Request URL: https://motomember-api.onrender.com/user
-Request Method: GET
+Request URL: https://motomember-api.onrender.com/user/:userId/verify/:boolean
+Request Method: PUT
 ```
-
-
-
-
-
-
 
 <p align="center">
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
